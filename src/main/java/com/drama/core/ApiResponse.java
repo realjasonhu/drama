@@ -55,4 +55,11 @@ public class ApiResponse extends HashMap<String, Object> {
         return new ApiResponse(CODE_UNKNOWN, null, message);
     }
 
+    public static final ApiResponse failed(String code, String message) {
+        return new ApiResponse(code, null, message);
+    }
+
+    public static final ApiResponse failed(String code, Exception e) {
+        return new ApiResponse(code, null, e.getMessage());
+    }
 }

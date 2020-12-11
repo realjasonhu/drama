@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.drama.dao.SysMenuMapper">
+    <resultMap id="BaseResultMap" type="com.drama.pojo.SysMenu">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="set_ip" jdbcType="VARCHAR" property="setIp"/>
+        <result column="level" jdbcType="VARCHAR" property="level"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.drama.pojo.SysMenu">
+    insert into sys_menu (id, create_time, set_ip, 
+      level, name)
+    values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{setIp,jdbcType=VARCHAR}, 
+      #{level,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.drama.pojo.SysMenu">
+        insert into sys_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="setIp != null">
+                set_ip,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="setIp != null">
+                #{setIp,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

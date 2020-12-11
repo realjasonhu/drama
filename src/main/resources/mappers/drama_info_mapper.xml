@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.drama.dao.DramaInfoMapper">
+    <resultMap id="BaseResultMap" type="com.drama.pojo.DramaInfo">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="set_ip" jdbcType="VARCHAR" property="setIp"/>
+        <result column="is_hot" jdbcType="CHAR" property="isHot"/>
+        <result column="customer_num" jdbcType="INTEGER" property="customerNum"/>
+        <result column=" type_id" jdbcType="BIGINT" property="typeId"/>
+        <result column="duration" jdbcType="VARCHAR" property="duration"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.drama.pojo.DramaInfo">
+    insert into drama_info (id, create_time, set_ip, 
+      is_hot, customer_num, " type_id", 
+      duration, price, description
+      )
+    values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{setIp,jdbcType=VARCHAR}, 
+      #{isHot,jdbcType=CHAR}, #{customerNum,jdbcType=INTEGER}, #{typeId,jdbcType=BIGINT}, 
+      #{duration,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.drama.pojo.DramaInfo">
+        insert into drama_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="setIp != null">
+                set_ip,
+            </if>
+            <if test="isHot != null">
+                is_hot,
+            </if>
+            <if test="customerNum != null">
+                customer_num,
+            </if>
+            <if test="typeId != null">
+                " type_id",
+            </if>
+            <if test="duration != null">
+                duration,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="setIp != null">
+                #{setIp,jdbcType=VARCHAR},
+            </if>
+            <if test="isHot != null">
+                #{isHot,jdbcType=CHAR},
+            </if>
+            <if test="customerNum != null">
+                #{customerNum,jdbcType=INTEGER},
+            </if>
+            <if test="typeId != null">
+                #{typeId,jdbcType=BIGINT},
+            </if>
+            <if test="duration != null">
+                #{duration,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>
