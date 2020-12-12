@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::common_head(~{::title},~{},~{})">
+    <title>列表</title>
+</head>
+<body>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span>列表</span>
+        <button class="btn btn-primary btn-xs" style="float: right;" type="button">新增</button>
+    </div>
+    <table id="tab"></table>
+</div>
+</body>
+<script type="text/javascript">
+
+    $(function () {
+        loadListData();
+    });
+
+    function loadListData() {
+        $("#tab").bootstrapTable({
+            method: 'POST',
+            url: '/web/queryDramaListData',
+            columns: columns,
+            cache: false,
+            pagination: true,
+            pageNumber: 1,
+            pageSize: 10,
+            paginationPreText: '上一页',
+            paginationNextText: '下一页',
+            search: false,  //是否启用查询
+            showColumns: false,  //显示下拉框勾选要显示的列
+            showRefresh: false  //显示刷新按钮
+        });
+    }
+
+    function opFormatter(v, row, index) {
+        return '<button class="btn btn-primary btn-xs" style="float: right;" type="button">修改</button>';
+    }
+
+    var columns = [
+        {field: 'title', title: '标题', width: 40, align: 'center'},
+        {field: 'title', title: '标题'},
+        {field: 'title', title: '标题'},
+        {field: 'title', title: '标题'},
+        {field: 'title', title: '标题'},
+        {field: 'title', title: '标题'},
+        {field: 'op', title: '操作', width: 80, align: 'center', formatter: opFormatter}
+    ];
+</script>
+</html>

@@ -83,4 +83,8 @@
             </if>
         </trim>
     </insert>
+
+    <select id="queryDramaListData" parameterType="java.util.Map" resultType="java.util.Map">
+        select * from drama_info
+    </select>
 </mapper>

@@ -8,9 +8,16 @@ spring:
     username: drama
     password: drama
     type: com.alibaba.druid.pool.DruidDataSource
+  thymeleaf:
+    cache: false
+    mode: HTML5
+    prefix: classpath:/templates/
+    suffix: .html
+    enabled: true
 
 mybatis:
   mapper-locations: mappers/*_mapper.xml
+
 
 
 

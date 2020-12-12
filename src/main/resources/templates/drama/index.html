@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::common_head(~{::title},~{},~{})">
+    <title>列表</title>
+</head>
+<body>
+<!--<div class="container">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">管理面板</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav" id="menu">
+                    <li data-toggle="1" class="active"><a href="javascript:;">列表</a></li>
+                    <li data-toggle="2"><a href="javascript:;">类型设置</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <iframe id="tab-frame" name="tab-frame" marginwidth="0" marginheight="0" scrolling="none" width="100%" height="100%" frameborder="0" src=""></iframe>
+</div>-->
+<div id="mm" class="easyui-menu" style="width:120px;">
+    <div>New</div>
+    <div>
+        <span>Open</span>
+        <div style="width:150px;">
+            <div><b>Word</b></div>
+            <div>Excel</div>
+            <div>PowerPoint</div>
+        </div>
+    </div>
+    <div data-options="iconCls:'icon-save'">Save</div>
+    <div class="menu-sep"></div>
+    <div>Exit</div>
+</div>
+</body>
+<script type="text/javascript">
+
+    $(function () {
+        // setSrc('/web/listIndex');
+        $('#mm').menu('show', {
+        });
+    });
+
+    $('#menu li').on('click', function (_this) {
+        var chosen = $(this).attr('data-toggle');
+        $('#menu li').each(function (index, _this) {
+            var toggle = $(_this).attr('data-toggle');
+            if (toggle == chosen)
+                $(_this).addClass('active');
+            else
+                $(_this).removeClass('active');
+        });
+        var src = '';
+        if (chosen == '1') {
+            src = '/web/listIndex';
+        }
+        setSrc(src);
+    });
+
+    function setSrc(src) {
+        document.getElementById('tab-frame').src = src;
+    }
+
+</script>
+</html>

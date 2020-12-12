@@ -41,6 +41,7 @@ public class DramaWebServiceImpl implements DramaWebService {
 
     @Override
     public List<Map<String, Object>> queryDramaListData(Map<String, Object> params) {
-        return null;
+        List<Map<String, Object>> list = dramaInfoMapper.queryDramaListData(params);
+        return list;
     }
 }

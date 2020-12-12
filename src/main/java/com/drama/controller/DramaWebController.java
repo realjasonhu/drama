@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,28 @@ public class DramaWebController {
     @Resource
     private DramaWebService dramaWebService;
 
+    @RequestMapping(value = "index")
+    public String index() {
+        return "drama/index";
+    }
+
+    @RequestMapping(value = "listIndex")
+    public ModelAndView listIndex(@RequestParam Map<String, Object> params) {
+
+        params.put("name", "lala");
+        return new ModelAndView("drama/drama_list", params);
+    }
+
+    @RequestMapping(value = "queryDramaListData")
+    @ResponseBody
+    public Object queryDramaListData(Map<String,Object> params) {
+        try {
+            return dramaWebService.queryDramaListData(params);
+        } catch (Exception e) {
+            return ApiResponse.failed(ApiResponse.CODE_FAIL_DEFAULT,"系统繁忙，请稍后重试");
+        }
+    }
+
     @RequestMapping(value = "saveDrama")
     @ResponseBody
     public ApiResponse saveDrama(@RequestParam Map<String, Object> params, HttpServletRequest request) {
@@ -33,6 +56,5 @@ public class DramaWebController {
         } catch (Exception e) {
             return ApiResponse.failed(ApiResponse.CODE_FAIL_DEFAULT, e.getMessage());
         }
-
     }
 }
