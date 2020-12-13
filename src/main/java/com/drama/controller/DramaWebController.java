@@ -2,6 +2,7 @@ package com.drama.controller;
 
 import com.drama.core.ApiResponse;
 import com.drama.core.DramaUtil;
+import com.drama.pojo.DramaInfo;
 import com.drama.service.DramaWebService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,26 +33,24 @@ public class DramaWebController {
 
     @RequestMapping(value = "listIndex")
     public ModelAndView listIndex(@RequestParam Map<String, Object> params) {
-
-        params.put("name", "lala");
         return new ModelAndView("drama/drama_list", params);
     }
 
     @RequestMapping(value = "queryDramaListData")
     @ResponseBody
-    public Object queryDramaListData(Map<String,Object> params) {
+    public Object queryDramaListData(@RequestParam Map<String, Object> params) {
         try {
             return dramaWebService.queryDramaListData(params);
         } catch (Exception e) {
-            return ApiResponse.failed(ApiResponse.CODE_FAIL_DEFAULT,"系统繁忙，请稍后重试");
+            return ApiResponse.failed(ApiResponse.CODE_FAIL_DEFAULT, "系统繁忙，请稍后重试");
         }
     }
 
     @RequestMapping(value = "saveDrama")
     @ResponseBody
-    public ApiResponse saveDrama(@RequestParam Map<String, Object> params, HttpServletRequest request) {
+    public ApiResponse saveDrama(DramaInfo dramaInfo, HttpServletRequest request) {
         try {
-            dramaWebService.saveDrama(params, DramaUtil.getIPAddress(request));
+            dramaWebService.saveDrama(dramaInfo, DramaUtil.getIPAddress(request));
             return ApiResponse.success();
         } catch (Exception e) {
             return ApiResponse.failed(ApiResponse.CODE_FAIL_DEFAULT, e.getMessage());

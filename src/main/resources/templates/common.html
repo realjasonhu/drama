@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="common_head(title,links,styles)">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:replace="${title}">模板</title>
     <script type="text/javascript" th:src="@{/jquery-3.1.1.min.js}"></script>
-    <!--<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/jquery-form.js}"></script>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
     <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 
     <link rel="stylesheet" th:href="@{/bootstrap-table/bootstrap-table.min.css}"/>
-    <script type="text/javascript" th:src="@{/bootstrap-table/bootstrap-table.min.js}"></script>-->
+    <script type="text/javascript" th:src="@{/bootstrap-table/bootstrap-table.min.js}"></script>
 
-    <link rel="stylesheet" th:href="@{/easyui/themes/black/easyui.css}">
-    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
-    <script type="text/javascript" th:src="@{/easyui/locate/easyui-lang-zh.js}"></script>
+    <link rel="stylesheet" th:href="@{/bootstrap-dialog/bootstrap-dialog.min.css}"/>
+    <script type="text/javascript" th:src="@{/bootstrap-dialog/bootstrap-dialog.min.js}"></script>
+
 
     <th:block th:replace="${links}"/>
     <th:block th:replace="${styles}"/>

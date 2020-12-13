@@ -9,6 +9,7 @@ import com.drama.pojo.DramaTitle;
 import com.drama.service.DramaWebService;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,14 +28,8 @@ public class DramaWebServiceImpl implements DramaWebService {
     private DramaTitleMapper dramaTitleMapper;
 
     @Override
-    public void saveDrama(Map<String, Object> params, String ip) {
-        DramaInfo info = new DramaInfo().setId(DramaUtil.generateUUID()).setCreateTime(new Date()).setSetIp(ip);
-
-        Optional.ofNullable("").map(str -> {
-            List<DramaTitle> titleList = Lists.newArrayList();
-            return null;
-        });
-
+    public void saveDrama(DramaInfo info, String ip) {
+        info.setId(DramaUtil.generateUUID()).setCreateTime(new Date()).setSetIp(ip);
         dramaInfoMapper.insertSelective(info);
 
     }
@@ -42,6 +37,9 @@ public class DramaWebServiceImpl implements DramaWebService {
     @Override
     public List<Map<String, Object>> queryDramaListData(Map<String, Object> params) {
         List<Map<String, Object>> list = dramaInfoMapper.queryDramaListData(params);
+        list.forEach(map -> {
+            map.put("id", MapUtils.getString(map, "id"));
+        });
         return list;
     }
 }

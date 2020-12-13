@@ -4,13 +4,63 @@
     <title>列表</title>
 </head>
 <body>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <span>列表</span>
-        <button class="btn btn-primary btn-xs" style="float: right;" type="button">新增</button>
+<div id="list" class="panel panel-default">
+    <div class="panel-heading" style="height: 50px;">
+        <span style="font-size: 25px;">列表</span>
+        <button class="btn btn-primary btn-sm" style="float: right;" onclick="javascript:showInfo('1');" type="button">新增</button>
     </div>
     <table id="tab"></table>
 </div>
+<br>
+
+<div id="info" style="width: 50%;" class="panel panel-default hide">
+    <div class="panel-heading" style="height: 50px;">
+        <button class="btn btn-primary btn-sm" style="float: right" onclick="javascript:saveDramaData();">保存</button>
+        <button class="btn btn-default btn-sm" style="float: right;margin-right: 10px;" onclick="javascript:$('#info').hide();" type="button">隐藏</button>
+    </div>
+    <form id="info-form">
+        <div class="form-group">
+            <label>标题</label>
+            <input name="title" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>小标题</label>
+            <input name="subTitle" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>文章链接</label>
+            <input name="articleUrl" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>HOT标识</label>
+            <select name="isHot" class="form-control">
+                <option value="0">否</option>
+                <option value="1">是</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>人数</label>
+            <input name="number" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>类型</label>
+            <input name="typeName" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>建议时长</label>
+            <input name="duration" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>价格</label>
+            <input name="price" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>图片介绍</label>
+            <textarea name="description" class="form-control"></textarea>
+        </div>
+    </form>
+</div>
+
 </body>
 <script type="text/javascript">
 
@@ -18,35 +68,75 @@
         loadListData();
     });
 
+    function showInfo(type, index) {
+        if (type == '2') {
+            var rowData = $('#tab').bootstrapTable('getData')[index];
+            console.log(rowData)
+        }
+
+        $('#info').removeClass('hide');
+    }
+
+    function hideInfo() {
+        $('#info').addClass('hide');
+    }
+
+    function saveDramaData() {
+        $('#info-form').ajaxSubmit({
+            type:'POST',
+            url:'/web/saveDrama',
+            success:function (data) {
+                if (data.code == '1') {
+                    hideInfo();
+                }
+            }
+        })
+    }
+
     function loadListData() {
         $("#tab").bootstrapTable({
             method: 'POST',
             url: '/web/queryDramaListData',
             columns: columns,
             cache: false,
+            striped: true,
             pagination: true,
             pageNumber: 1,
             pageSize: 10,
             paginationPreText: '上一页',
             paginationNextText: '下一页',
-            search: false,  //是否启用查询
-            showColumns: false,  //显示下拉框勾选要显示的列
-            showRefresh: false  //显示刷新按钮
+            paginationLoop: true,
+            sidePagination: 'server',
+            queryParams: function queryParams(params) {
+                var param = {
+                    pageNumber: params.pageNumber,
+                    pageSize: params.pageSize,
+                    sortName: params.sortName,
+                    sortOrder: params.sortOrder};
+                return param;
+            },
         });
     }
 
     function opFormatter(v, row, index) {
-        return '<button class="btn btn-primary btn-xs" style="float: right;" type="button">修改</button>';
+        return '<button class="btn btn-primary btn-sm" style="float: right;" type="button" onclick="showInfo(\'2\',\'' + index + '\')">修改</button>';
+    }
+
+    function isHotFormatter(v,row,index) {
+        if (v == '1') {
+            return '<span class="label label-danger">是</span>';
+        } else {
+            return '<span>否</span>';
+        }
     }
 
     var columns = [
-        {field: 'title', title: '标题', width: 40, align: 'center'},
-        {field: 'title', title: '标题'},
-        {field: 'title', title: '标题'},
-        {field: 'title', title: '标题'},
-        {field: 'title', title: '标题'},
-        {field: 'title', title: '标题'},
-        {field: 'op', title: '操作', width: 80, align: 'center', formatter: opFormatter}
+        {field: 'title', title: '标题', width: 100, align: 'center'},
+        {field: 'is_hot', title: 'HOT标识', width: 100, align: 'center',formatter:isHotFormatter},
+        {field: 'number', title: '人数', width: 80, align: 'center'},
+        {field: 'type_name', title: '类型', width: 100, align: 'center'},
+        {field: 'price', title: '价格', width: 100, align: 'center'},
+        {field: 'op', title: '操作', width: 40, align: 'center', formatter: opFormatter}
     ];
 </script>
 </html>

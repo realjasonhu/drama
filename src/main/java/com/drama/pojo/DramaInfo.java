@@ -1,9 +1,9 @@
 package com.drama.pojo;
 
-import java.math.BigDecimal;
+import java.io.Serializable;
 import java.util.Date;
 
-public class DramaInfo {
+public class DramaInfo implements Serializable {
     
     private Long id;
 
@@ -11,17 +11,25 @@ public class DramaInfo {
 
     private String setIp;
 
+    private Date updateTime;
+
+    private String updateIp;
+
     private String isHot;
 
-    private Integer customerNum;
+    private String number;
 
-    private Long typeId;
+    private String typeName;
 
     private String duration;
 
-    private BigDecimal price;
+    private String price;
 
     private String description;
+
+    private String articleUrl;
+
+    private String pictureUrl;
 
     public Long getId() {
         return id;
@@ -50,6 +58,24 @@ public class DramaInfo {
         return this;
     }
 
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public DramaInfo setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+        return this;
+    }
+
+    public String getUpdateIp() {
+        return updateIp;
+    }
+
+    public DramaInfo setUpdateIp(String updateIp) {
+        this.updateIp = updateIp == null ? null : updateIp.trim();
+        return this;
+    }
+
     public String getIsHot() {
         return isHot;
     }
@@ -59,21 +85,21 @@ public class DramaInfo {
         return this;
     }
 
-    public Integer getCustomerNum() {
-        return customerNum;
+    public String getNumber() {
+        return number;
     }
 
-    public DramaInfo setCustomerNum(Integer customerNum) {
-        this.customerNum = customerNum;
+    public DramaInfo setNumber(String number) {
+        this.number = number == null ? null : number.trim();
         return this;
     }
 
-    public Long getTypeId() {
-        return typeId;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public DramaInfo setTypeId(Long typeId) {
-        this.typeId = typeId;
+    public DramaInfo setTypeName(String typeName) {
+        this.typeName = typeName == null ? null : typeName.trim();
         return this;
     }
 
@@ -86,12 +112,12 @@ public class DramaInfo {
         return this;
     }
 
-    public BigDecimal getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public DramaInfo setPrice(BigDecimal price) {
-        this.price = price;
+    public DramaInfo setPrice(String price) {
+        this.price = price == null ? null : price.trim();
         return this;
     }
 
@@ -101,6 +127,24 @@ public class DramaInfo {
 
     public DramaInfo setDescription(String description) {
         this.description = description == null ? null : description.trim();
+        return this;
+    }
+
+    public String getArticleUrl() {
+        return articleUrl;
+    }
+
+    public DramaInfo setArticleUrl(String articleUrl) {
+        this.articleUrl = articleUrl == null ? null : articleUrl.trim();
+        return this;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public DramaInfo setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl == null ? null : pictureUrl.trim();
         return this;
     }
 }

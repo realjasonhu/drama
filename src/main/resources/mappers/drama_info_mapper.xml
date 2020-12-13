@@ -5,22 +5,28 @@
         <result column="id" jdbcType="BIGINT" property="id"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="set_ip" jdbcType="VARCHAR" property="setIp"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_ip" jdbcType="VARCHAR" property="updateIp"/>
         <result column="is_hot" jdbcType="CHAR" property="isHot"/>
-        <result column="customer_num" jdbcType="INTEGER" property="customerNum"/>
-        <result column=" type_id" jdbcType="BIGINT" property="typeId"/>
+        <result column="number" jdbcType="VARCHAR" property="number"/>
+        <result column="type_name" jdbcType="VARCHAR" property="typeName"/>
         <result column="duration" jdbcType="VARCHAR" property="duration"/>
-        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="price" jdbcType="VARCHAR" property="price"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="article_url" jdbcType="VARCHAR" property="articleUrl"/>
+        <result column="picture_url" jdbcType="VARCHAR" property="pictureUrl"/>
     </resultMap>
     <insert id="insert" parameterType="com.drama.pojo.DramaInfo">
     insert into drama_info (id, create_time, set_ip, 
-      is_hot, customer_num, " type_id", 
-      duration, price, description
-      )
+      update_time, update_ip, is_hot, 
+      number, type_name, duration,
+      price, description, article_url, 
+      picture_url)
     values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{setIp,jdbcType=VARCHAR}, 
-      #{isHot,jdbcType=CHAR}, #{customerNum,jdbcType=INTEGER}, #{typeId,jdbcType=BIGINT}, 
-      #{duration,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
-      )
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateIp,jdbcType=VARCHAR}, #{isHot,jdbcType=CHAR}, 
+      #{number,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{duration,jdbcType=VARCHAR}, 
+      #{price,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{articleUrl,jdbcType=VARCHAR}, 
+      #{pictureUrl,jdbcType=VARCHAR})
   </insert>
     <insert id="insertSelective" parameterType="com.drama.pojo.DramaInfo">
         insert into drama_info
@@ -34,14 +40,20 @@
             <if test="setIp != null">
                 set_ip,
             </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateIp != null">
+                update_ip,
+            </if>
             <if test="isHot != null">
                 is_hot,
             </if>
-            <if test="customerNum != null">
-                customer_num,
+            <if test="number != null">
+                number,
             </if>
-            <if test="typeId != null">
-                " type_id",
+            <if test="typeName != null">
+                type_name,
             </if>
             <if test="duration != null">
                 duration,
@@ -51,6 +63,12 @@
             </if>
             <if test="description != null">
                 description,
+            </if>
+            <if test="articleUrl != null">
+                article_url,
+            </if>
+            <if test="pictureUrl != null">
+                picture_url,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -63,28 +81,52 @@
             <if test="setIp != null">
                 #{setIp,jdbcType=VARCHAR},
             </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateIp != null">
+                #{updateIp,jdbcType=VARCHAR},
+            </if>
             <if test="isHot != null">
                 #{isHot,jdbcType=CHAR},
             </if>
-            <if test="customerNum != null">
-                #{customerNum,jdbcType=INTEGER},
+            <if test="number != null">
+                #{number,jdbcType=VARCHAR},
             </if>
-            <if test="typeId != null">
-                #{typeId,jdbcType=BIGINT},
+            <if test="typeName != null">
+                #{typeName,jdbcType=VARCHAR},
             </if>
             <if test="duration != null">
                 #{duration,jdbcType=VARCHAR},
             </if>
             <if test="price != null">
-                #{price,jdbcType=DECIMAL},
+                #{price,jdbcType=VARCHAR},
             </if>
             <if test="description != null">
                 #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="articleUrl != null">
+                #{articleUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="pictureUrl != null">
+                #{pictureUrl,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
 
     <select id="queryDramaListData" parameterType="java.util.Map" resultType="java.util.Map">
-        select * from drama_info
+        select id,
+            is_hot,
+            number, type_name, duration,
+            price, description, article_url,
+            picture_url
+        from drama_info
+        order by create_time desc
+        <if test="limit != null and limit != ''">
+            limit ${limit}
+        </if>
+        <if test="offset != null and offset != ''">
+            offset ${offset}
+        </if>
     </select>
 </mapper>
