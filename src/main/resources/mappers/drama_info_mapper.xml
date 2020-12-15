@@ -114,6 +114,10 @@
         </trim>
     </insert>
 
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from drama_info where id = #{id}
+    </delete>
+
     <select id="queryDramaListData" parameterType="java.util.Map" resultType="java.util.Map">
         select cast(id as char) as id,
             is_hot,
@@ -121,12 +125,16 @@
             price, description, article_url,
             picture_url
         from drama_info
+        where 1 = 1
+        <if test="title != null and title != ''">
+            and title like '%'||#{title}||'%'
+        </if>
         order by create_time desc
-        <if test="limit != null and limit != ''">
-            limit ${limit}
-        </if>
-        <if test="offset != null and offset != ''">
-            offset ${offset}
-        </if>
+<!--        <if test="limit != null and limit != ''">-->
+<!--            limit ${limit}-->
+<!--        </if>-->
+<!--        <if test="offset != null and offset != ''">-->
+<!--            offset ${offset}-->
+<!--        </if>-->
     </select>
 </mapper>

@@ -7,60 +7,78 @@
 <div id="list" class="panel panel-default">
     <div class="panel-heading" style="height: 50px;">
         <span style="font-size: 25px;">列表</span>
-        <button class="btn btn-primary btn-sm" style="float: right;" onclick="javascript:showInfo('1');" type="button">新增</button>
+        <button class="btn btn-primary btn-sm" style="float: right;" onclick="javascript:showInfo('1');">新增</button>
     </div>
     <table id="tab"></table>
 </div>
-<br>
 
-<div id="info" style="width: 50%;" class="panel panel-default hide">
-    <div class="panel-heading" style="height: 50px;">
-        <button class="btn btn-primary btn-sm" style="float: right" onclick="javascript:saveDramaData();">保存</button>
-        <button class="btn btn-default btn-sm" style="float: right;margin-right: 10px;" onclick="javascript:$('#info').hide();" type="button">隐藏</button>
+<div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modal-title">剧本设置</h4>
+            </div>
+            <div class="modal-body">
+                <form id="info-form">
+                    <div class="form-group">
+                        <label for="title">标题</label>
+                        <input name="title" id="title" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="sub_title">小标题</label>
+                        <input name="subTitle" id="sub_title" type="text" class="form-control" placeholder="逗号分隔">
+                    </div>
+                    <div class="form-group">
+                        <label for="menu_id">归属菜单</label>
+                        <select id="menu_id" name="menuId" class="form-control">
+                            <option th:each="menu:${menuList}" th:value="${menu.id}" th:text="${menu.full_name}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="picture">图片</label>
+                        <input type="file" class="form-control-file" id="picture" name="picture">
+                    </div>
+                    <div class="form-group">
+                        <label for="article_url">文章链接</label>
+                        <input name="articleUrl" id="article_url" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="is_hot">HOT标识</label>
+                        <select name="isHot" id="is_hot" class="form-control">
+                            <option value="0">否</option>
+                            <option value="1">是</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="number">人数</label>
+                        <input name="number" id="number" type="text" class="form-control" placeholder="数字，例如1或者2">
+                    </div>
+                    <div class="form-group">
+                        <label for="type_name">类型</label>
+                        <input name="typeName" id="type_name" type="text" class="form-control" placeholder="输入字符串">
+                    </div>
+                    <div class="form-group">
+                        <label for="duration">建议时长</label>
+                        <input name="duration" id="duration" type="text" class="form-control" placeholder="数字，输入什么小程序显示什么">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">价格</label>
+                        <input name="price" id="price" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">图片介绍</label>
+                        <textarea name="description" id="description" class="form-control"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="saveDramaData();">保存</button>
+            </div>
+        </div>
     </div>
-    <form id="info-form">
-        <div class="form-group">
-            <label>标题</label>
-            <input name="title" type="text" class="form-control">
-        </div>
-        <div class="form-group">
-            <label>小标题</label>
-            <input name="subTitle" type="text" class="form-control">
-        </div>
-        <div class="form-group">
-            <label>文章链接</label>
-            <input name="articleUrl" type="text" class="form-control">
-        </div>
-        <div class="form-group">
-            <label>HOT标识</label>
-            <select name="isHot" class="form-control">
-                <option value="0">否</option>
-                <option value="1">是</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>人数</label>
-            <input name="number" type="text" class="form-control">
-        </div>
-        <div class="form-group">
-            <label>类型</label>
-            <input name="typeName" type="text" class="form-control">
-        </div>
-        <div class="form-group">
-            <label>建议时长</label>
-            <input name="duration" type="text" class="form-control">
-        </div>
-        <div class="form-group">
-            <label>价格</label>
-            <input name="price" type="text" class="form-control">
-        </div>
-        <div class="form-group">
-            <label>图片介绍</label>
-            <textarea name="description" class="form-control"></textarea>
-        </div>
-    </form>
 </div>
-
 </body>
 <script type="text/javascript">
 
@@ -69,23 +87,32 @@
     });
 
     function showInfo(type, index) {
+        if (type == '1') {
+            $('#info-form input').each(function () {
+                $(this).val('');
+            });
+        }
         if (type == '2') {
             var rowData = $('#tab').bootstrapTable('getData')[index];
-            console.log(rowData)
+            for (var key in rowData) {
+                $('#' + key).val(rowData[key]);
+            }
         }
-
-        $('#info').removeClass('hide');
+        $('#info-modal').modal('show');
     }
 
     function hideInfo() {
-        $('#info').addClass('hide');
+        $('#info-form input').each(function () {
+            $(this).val('');
+        });
+        $('#info-modal').modal('hide');
     }
 
     function saveDramaData() {
         $('#info-form').ajaxSubmit({
-            type:'POST',
-            url:'/web/saveDrama',
-            success:function (data) {
+            type: 'POST',
+            url: '/web/saveDrama',
+            success: function (data) {
                 if (data.code == '1') {
                     hideInfo();
                 }
@@ -95,7 +122,6 @@
 
     function loadListData() {
         $("#tab").bootstrapTable({
-            method: 'POST',
             url: '/web/queryDramaListData',
             columns: columns,
             cache: false,
@@ -108,21 +134,18 @@
             paginationLoop: true,
             sidePagination: 'server',
             queryParams: function queryParams(params) {
-                var param = {
-                    pageNumber: params.pageNumber,
-                    pageSize: params.pageSize,
-                    sortName: params.sortName,
-                    sortOrder: params.sortOrder};
-                return param;
+                return params;
             },
         });
     }
 
     function opFormatter(v, row, index) {
-        return '<button class="btn btn-primary btn-sm" style="float: right;" type="button" onclick="showInfo(\'2\',\'' + index + '\')">修改</button>';
+        return '<button class="btn btn-primary btn-sm" type="button" onclick="showInfo(\'2\',\'' + index + '\');">修改</button>'
+            + '&emsp;' +
+            '<button class="btn btn-danger btn-sm" type="button" onclick="deleteDrama(\'' + row.id + '\');">删除</button>';
     }
 
-    function isHotFormatter(v,row,index) {
+    function isHotFormatter(v, row, index) {
         if (v == '1') {
             return '<span class="label label-danger">是</span>';
         } else {
@@ -130,9 +153,26 @@
         }
     }
 
+    function deleteDrama(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/web/deleteDrama',
+            data: {id: id},
+            dataType: 'json',
+            async: false,
+            success: function (result) {
+                var code = result['code'];
+                if (result.code == '1') {
+                    alert('删除成功');
+                    $('#tab').bootstrapTable('reload');
+                }
+            }
+        });
+    }
+
     var columns = [
         {field: 'title', title: '标题', width: 100, align: 'center'},
-        {field: 'is_hot', title: 'HOT标识', width: 100, align: 'center',formatter:isHotFormatter},
+        {field: 'is_hot', title: 'HOT标识', width: 100, align: 'center', formatter: isHotFormatter},
         {field: 'number', title: '人数', width: 80, align: 'center'},
         {field: 'type_name', title: '类型', width: 100, align: 'center'},
         {field: 'price', title: '价格', width: 100, align: 'center'},

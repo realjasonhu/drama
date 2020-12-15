@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class DramaInfo implements Serializable {
-    
+
     private Long id;
 
     private Date createTime;
@@ -14,6 +14,12 @@ public class DramaInfo implements Serializable {
     private Date updateTime;
 
     private String updateIp;
+
+    private String title;
+
+    private String subTitle;
+
+    private Long menuId;
 
     private String isHot;
 
@@ -146,5 +152,29 @@ public class DramaInfo implements Serializable {
     public DramaInfo setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl == null ? null : pictureUrl.trim();
         return this;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
+    }
+
+    public Long getMenuId() {
+        return menuId;
+    }
+
+    public void setMenuId(Long menuId) {
+        this.menuId = menuId;
     }
 }

@@ -9,11 +9,11 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
     </resultMap>
     <insert id="insert" parameterType="com.drama.pojo.SysMenu">
-    insert into sys_menu (id, create_time, set_ip, 
-      level, name)
-    values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{setIp,jdbcType=VARCHAR}, 
-      #{level,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR})
-  </insert>
+        insert into sys_menu (id, create_time, set_ip,
+          level, name)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{setIp,jdbcType=VARCHAR},
+          #{level,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR})
+    </insert>
     <insert id="insertSelective" parameterType="com.drama.pojo.SysMenu">
         insert into sys_menu
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -51,4 +51,14 @@
             </if>
         </trim>
     </insert>
+
+    <select id="querySysMenuListData" parameterType="java.util.Map" resultType="java.util.Map">
+        select cast(id as char) as id,
+            level,
+            name,
+            cast(parent_id as char) as parent_id,
+            full_name
+        from sys_menu
+        order by id
+    </select>
 </mapper>

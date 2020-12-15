@@ -9,5 +9,7 @@ public interface DramaWebService {
 
     void saveDrama(DramaInfo info, String ip);
 
-    List<Map<String, Object>> queryDramaListData(Map<String, Object> params);
+    void deleteDrama(Map<String, Object> params);
+
+    Map<String, Object> queryDramaListData(Map<String, Object> params);
 }
