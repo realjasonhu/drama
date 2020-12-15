@@ -21,6 +21,9 @@ mybatis:
 pagehelper:
   helper-dialect: mysql
 
+logging:
+  level:
+    com.drama.dao: debug
 
 
 
