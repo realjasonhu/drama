@@ -1,6 +1,9 @@
 package com.drama.core;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.*;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -8,24 +11,26 @@ import java.util.Properties;
  * @date 2020/12/14 19:32
  * @since
  */
+@Slf4j
 public class PropertiesUtil {
 
     private static final String CONFIGURATION = "configuration.properties";
 
-    public static String getConfiguraionProperty(String key, String defaultValue) {
-
+    private static Properties loadProperties(String fileName) {
+        Properties properties = new Properties();
         try {
-            Properties properties = new Properties();
-            properties.load(new BufferedInputStream(new FileInputStream(CONFIGURATION)));
-            String value = properties.getProperty(key, defaultValue);
-            return value;
+            properties.load(PropertiesUtil.class.getClassLoader().getResourceAsStream(fileName));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("读取文件失败,fileName={},e={}", fileName, e);
         }
-        return defaultValue;
+        return properties;
     }
 
-    public static void main(String[] args) {
-        String[][][][] strings = {{{{"a","b"}}}};
+    public static String getConfiguraionProperty(String key, String defaultValue) {
+        Properties properties = loadProperties(CONFIGURATION);
+        String value = properties.getProperty(key, defaultValue);
+        if (!Objects.isNull(value))
+            return value;
+        return defaultValue;
     }
 }

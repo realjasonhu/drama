@@ -115,7 +115,7 @@
     </insert>
 
     <select id="queryDramaListData" parameterType="java.util.Map" resultType="java.util.Map">
-        select id,
+        select cast(id as char) as id,
             is_hot,
             number, type_name, duration,
             price, description, article_url,
