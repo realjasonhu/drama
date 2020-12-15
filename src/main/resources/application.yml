@@ -18,6 +18,9 @@ spring:
 mybatis:
   mapper-locations: mappers/*_mapper.xml
 
+pagehelper:
+  helper-dialect: mysql
+
 
 
 

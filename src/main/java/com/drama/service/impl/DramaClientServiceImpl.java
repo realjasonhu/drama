@@ -3,6 +3,7 @@ package com.drama.service.impl;
 
 import com.drama.dao.DramaInfoMapper;
 import com.drama.service.DramaClientService;
+import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,7 @@ public class DramaClientServiceImpl implements DramaClientService {
 
     @Override
     public List<Map<String, Object>> queryDramaClientListData(Map<String, Object> params) {
-        Integer rows = MapUtils.getInteger(params, "rows", 20);
-        params.put("offset", (MapUtils.getInteger(params, "rows", 1) - 1) * rows);
-        params.put("limit", rows);
+        PageHelper.startPage(MapUtils.getInteger(params, "page", 1), MapUtils.getInteger(params, "rows", 20));
         List<Map<String, Object>> list = dramaInfoMapper.queryDramaListData(params);
         return list;
     }
