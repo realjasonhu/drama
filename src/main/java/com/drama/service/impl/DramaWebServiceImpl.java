@@ -63,7 +63,6 @@ public class DramaWebServiceImpl implements DramaWebService {
             String uploadPath = PropertiesUtil.getConfiguraionProperty("upload.url", null);
             File dir = new File(uploadPath);
             if (!dir.exists()) {
-                log.info("开始创建文件");
                 dir.mkdirs();
             }
             String fileName = new StringBuilder(info.getId().toString()).append("_").append(uploadFile.getOriginalFilename()).toString();
@@ -73,7 +72,6 @@ public class DramaWebServiceImpl implements DramaWebService {
             os.write(ByteStreams.toByteArray(is));
             info.setPictureUrl(new StringBuilder(PropertiesUtil.getConfiguraionProperty("upload.relative.url", null)).append("/").append(fileName).toString());
         } catch (IOException e) {
-            log.info("上传文件失败");
             log.error("上传图片失败:params={},e={}", JSONUtils.toJSONString(info), e);
         } finally {
             try {

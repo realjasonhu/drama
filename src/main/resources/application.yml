@@ -27,7 +27,7 @@ pagehelper:
 
 logging:
   level:
-    com.drama.dao: info
+    com.drama.dao: debug
 
 
 
