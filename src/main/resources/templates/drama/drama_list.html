@@ -20,7 +20,8 @@
                 <h4 class="modal-title" id="modal-title">剧本设置</h4>
             </div>
             <div class="modal-body">
-                <form id="info-form">
+                <form id="info-form" enctype="multipart/form-data">
+                    <input type="hidden" name="id" id="id" value="">
                     <div class="form-group">
                         <label for="title">标题</label>
                         <input name="title" id="title" type="text" class="form-control">
@@ -38,6 +39,10 @@
                     <div class="form-group">
                         <label for="picture">图片</label>
                         <input type="file" class="form-control-file" id="picture" name="picture">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">图片介绍</label>
+                        <textarea name="description" id="description" class="form-control"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="article_url">文章链接</label>
@@ -65,10 +70,6 @@
                     <div class="form-group">
                         <label for="price">价格</label>
                         <input name="price" id="price" type="text" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="description">图片介绍</label>
-                        <textarea name="description" id="description" class="form-control"></textarea>
                     </div>
                 </form>
             </div>
@@ -115,6 +116,8 @@
             success: function (data) {
                 if (data.code == '1') {
                     hideInfo();
+                } else {
+                    alert(data.message);
                 }
             }
         })

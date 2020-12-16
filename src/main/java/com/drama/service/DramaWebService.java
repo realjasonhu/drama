@@ -2,12 +2,12 @@ package com.drama.service;
 
 import com.drama.pojo.DramaInfo;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public interface DramaWebService {
 
-    void saveDrama(DramaInfo info, String ip);
+    void saveDrama(DramaInfo info, HttpServletRequest request);
 
     void deleteDrama(Map<String, Object> params);
 
