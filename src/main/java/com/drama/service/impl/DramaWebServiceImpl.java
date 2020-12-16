@@ -38,7 +38,7 @@ public class DramaWebServiceImpl implements DramaWebService {
         if (Objects.nonNull(info.getId())) {
             info.setUpdateTime(new Date()).setUpdateIp(DramaUtil.getIPAddress(request));
 
-            uploadFile(info,(MultipartHttpServletRequest) request);
+            uploadFile(info, (MultipartHttpServletRequest) request);
 
             dramaInfoMapper.updateSelective(info);
 
@@ -66,15 +66,12 @@ public class DramaWebServiceImpl implements DramaWebService {
                 log.info("开始创建文件");
                 dir.mkdirs();
             }
-            String filePath = new StringBuilder(uploadPath).append("/").append(info.getId()).append("_").append(uploadFile.getOriginalFilename()).toString();
-            File file = new File(filePath);
+            String fileName = new StringBuilder(info.getId().toString()).append("_").append(uploadFile.getOriginalFilename()).toString();
+            File file = new File(new StringBuilder(uploadPath).append("/").append(fileName).toString());
             is = uploadFile.getInputStream();
-            log.info("拿到的inputstream：" + is);
             os = new FileOutputStream(file);
-            log.info("拿到的outputstream：" + os);
             os.write(ByteStreams.toByteArray(is));
-            log.info("写文件结束");
-            info.setPictureUrl(filePath);
+            info.setPictureUrl(new StringBuilder(PropertiesUtil.getConfiguraionProperty("upload.relative.url", null)).append("/").append(fileName).toString());
         } catch (IOException e) {
             log.info("上传文件失败");
             log.error("上传图片失败:params={},e={}", JSONUtils.toJSONString(info), e);
@@ -103,9 +100,7 @@ public class DramaWebServiceImpl implements DramaWebService {
         int rows = MapUtils.getInteger(params, "limit", 10), pageNumber = MapUtils.getInteger(params, "offset", 0) / rows + 1;
         Page page = PageHelper.startPage(pageNumber, rows, true);
         List<Map<String, Object>> list = Optional.ofNullable(dramaInfoMapper.queryDramaListData(params)).map(l -> {
-            l.forEach(map -> {
-
-            });
+            l.forEach(map -> map.put("picture_url", new StringBuilder(PropertiesUtil.getConfiguraionProperty("realm.name", null)).append(MapUtils.getString(map, "picture_url"))));
             return l;
         }).orElse(Lists.newArrayList());
         Map<String, Object> result = Maps.newHashMap();
