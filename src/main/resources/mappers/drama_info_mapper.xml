@@ -15,19 +15,24 @@
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="article_url" jdbcType="VARCHAR" property="articleUrl"/>
         <result column="picture_url" jdbcType="VARCHAR" property="pictureUrl"/>
+        <result column="menu_id" jdbcType="BIGINT" property="menuId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="sub_title" jdbcType="VARCHAR" property="subTitle"/>
     </resultMap>
     <insert id="insert" parameterType="com.drama.pojo.DramaInfo">
-    insert into drama_info (id, create_time, set_ip, 
-      update_time, update_ip, is_hot, 
-      number, type_name, duration,
-      price, description, article_url, 
-      picture_url)
-    values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{setIp,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateIp,jdbcType=VARCHAR}, #{isHot,jdbcType=CHAR}, 
-      #{number,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{duration,jdbcType=VARCHAR}, 
-      #{price,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{articleUrl,jdbcType=VARCHAR}, 
-      #{pictureUrl,jdbcType=VARCHAR})
-  </insert>
+        insert into drama_info (id, create_time, set_ip,
+          update_time, update_ip, is_hot,
+          number, type_name, duration,
+          price, description, article_url,
+          picture_url, menu_id, title,
+          sub_title)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{setIp,jdbcType=VARCHAR},
+          #{updateTime,jdbcType=TIMESTAMP}, #{updateIp,jdbcType=VARCHAR}, #{isHot,jdbcType=CHAR},
+          #{number,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{duration,jdbcType=VARCHAR},
+          #{price,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{articleUrl,jdbcType=VARCHAR},
+          #{pictureUrl,jdbcType=VARCHAR}, #{menuId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR},
+          #{subTitle,jdbcType=VARCHAR})
+    </insert>
     <insert id="insertSelective" parameterType="com.drama.pojo.DramaInfo">
         insert into drama_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -70,6 +75,15 @@
             <if test="pictureUrl != null">
                 picture_url,
             </if>
+            <if test="menuId != null">
+                menu_id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="subTitle != null">
+                sub_title,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -111,30 +125,97 @@
             <if test="pictureUrl != null">
                 #{pictureUrl,jdbcType=VARCHAR},
             </if>
+            <if test="menuId != null">
+                #{menuId,jdbcType=BIGINT},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="subTitle != null">
+                #{subTitle,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
+
+    <update id="updateSelective" parameterType="com.drama.pojo.DramaInfo">
+        update drama_info set
+        <trim suffixOverrides=",">
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateIp != null">
+                update_ip = #{updateIp,jdbcType=VARCHAR},
+            </if>
+            <if test="isHot != null">
+                is_hot = #{isHot,jdbcType=CHAR},
+            </if>
+            <if test="number != null">
+                number = #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="typeName != null">
+                type_name = #{typeName,jdbcType=VARCHAR},
+            </if>
+            <if test="duration != null">
+                duration = #{duration,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="articleUrl != null">
+                article_url = #{articleUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="pictureUrl != null">
+                picture_url = #{pictureUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="menuId != null">
+                menu_id = #{menuId,jdbcType=BIGINT},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="subTitle != null">
+                sub_title = #{subTitle,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from drama_info where id = #{id}
     </delete>
 
     <select id="queryDramaListData" parameterType="java.util.Map" resultType="java.util.Map">
-        select cast(id as char) as id,
-            is_hot,
-            number, type_name, duration,
-            price, description, article_url,
-            picture_url
-        from drama_info
+        SELECT
+            cast( t.id AS CHAR ) AS id,
+            t.create_time,
+            t.set_ip,
+            t.update_time,
+            t.update_ip,
+            t.is_hot,
+            date_format( IFNULL( t.update_time, t.create_time ), '%Y-%m-%d %H:%i' ) as create_time,
+            IFNULL( t.update_ip, t.set_ip ) AS ip,
+            t.number,
+            t.type_name,
+            t.duration,
+            t.price,
+            t.description,
+            t.article_url,
+            t.picture_url,
+            t.menu_id,
+            t.title,
+            t.sub_title
+        FROM drama_info t
+        left join sys_menu sm on t.menu_id = sm.id
         where 1 = 1
         <if test="title != null and title != ''">
-            and title like '%'||#{title}||'%'
+            and t.title like '%'||#{title}||'%'
         </if>
-        order by create_time desc
-<!--        <if test="limit != null and limit != ''">-->
-<!--            limit ${limit}-->
-<!--        </if>-->
-<!--        <if test="offset != null and offset != ''">-->
-<!--            offset ${offset}-->
-<!--        </if>-->
+        <if test="menu_id != null and menu_id != ''">
+            and (t.menu_id = cast(#{menu_id} as decimal(64)) or sm.parent_id = cast(#{menu_id} as decimal(64)))
+        </if>
+        order by t.is_hot desc,t.create_time desc
     </select>
 </mapper>

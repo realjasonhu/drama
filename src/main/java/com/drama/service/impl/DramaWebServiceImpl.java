@@ -34,15 +34,29 @@ public class DramaWebServiceImpl implements DramaWebService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void saveDrama(DramaInfo info, HttpServletRequest request) {
+
+        if (Objects.nonNull(info.getId())) {
+            info.setUpdateTime(new Date()).setUpdateIp(DramaUtil.getIPAddress(request));
+
+            uploadFile(info,(MultipartHttpServletRequest) request);
+
+            dramaInfoMapper.updateSelective(info);
+
+            return;
+        }
+
         info.setId(DramaUtil.generateUUID()).setCreateTime(new Date()).setSetIp(DramaUtil.getIPAddress(request));
 
         uploadFile(info, (MultipartHttpServletRequest) request);
+
 
         dramaInfoMapper.insertSelective(info);
     }
 
     private DramaInfo uploadFile(DramaInfo info, MultipartHttpServletRequest request) {
         MultipartFile uploadFile = request.getFile("picture");
+        if (Objects.isNull(uploadFile))
+            return info;
         InputStream is = null;
         OutputStream os = null;
         try {

@@ -11,6 +11,8 @@ public interface DramaInfoMapper {
 
     int insertSelective(DramaInfo record);
 
+    int updateSelective(DramaInfo record);
+
     int deleteByPrimaryKey(Long primaryKey);
 
     List<Map<String, Object>> queryDramaListData(Map<String, Object> params);

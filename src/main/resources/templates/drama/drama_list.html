@@ -109,11 +109,16 @@
         $('#info-modal').modal('hide');
     }
 
+    function refreshTable() {
+        $('#tab').bootstrapTable('refresh');
+    }
+
     function saveDramaData() {
         $('#info-form').ajaxSubmit({
             type: 'POST',
             url: '/web/saveDrama',
             success: function (data) {
+                refreshTable();
                 if (data.code == '1') {
                     hideInfo();
                 } else {
@@ -164,10 +169,9 @@
             dataType: 'json',
             async: false,
             success: function (result) {
-                var code = result['code'];
+                refreshTable();
                 if (result.code == '1') {
                     alert('删除成功');
-                    $('#tab').bootstrapTable('reload');
                 }
             }
         });
