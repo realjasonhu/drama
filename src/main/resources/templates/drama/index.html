@@ -17,19 +17,15 @@
             </ul>
         </div>
     </div>
-    <div>
-        <iframe id="tab-frame" name="tab-frame" marginwidth="0" marginheight="0" scrolling="none" width="100%" height="100%" frameborder="0" src=""></iframe>
-    </div>
+    <iframe id="tab-frame" name="tab-frame" marginwidth="0" marginheight="0" scrolling="none" width="100%" height="100%" frameborder="0" src=""></iframe>
 </div>
 </body>
 <script type="text/javascript">
-
-    $(function () {
+    $(document).ready(function () {
         setSrc('/web/listIndex');
         document.getElementsByTagName('body')[0].style.height = window.innerHeight + 'px';
-        var iframeHeight = window.innerHeight - document.getElementsByClassName('navbar-static-top')[0].style.height;
+        var iframeHeight = window.innerHeight - document.getElementsByClassName('navbar')[0].offsetHeight - document.getElementsByClassName('navbar')[0].scrollHeight;
         document.getElementById('tab-frame').style.height = iframeHeight + 'px';
-        console.log(window.innerHeight + 'px')
     });
 
     $('#menu li').on('click', function (_this) {
