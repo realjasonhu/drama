@@ -37,6 +37,17 @@ public class DramaInfo implements Serializable {
 
     private String pictureUrl;
 
+    private String playStatus;
+
+    public String getPlayStatus() {
+        return playStatus;
+    }
+
+    public DramaInfo setPlayStatus(String playStatus) {
+        this.playStatus = playStatus;
+        return this;
+    }
+
     public Long getId() {
         return id;
     }

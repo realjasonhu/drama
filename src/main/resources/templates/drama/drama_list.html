@@ -9,7 +9,7 @@
         <span style="font-size: 25px;">列表</span>
         <button class="btn btn-primary btn-sm" style="float: right;" onclick="javascript:showInfo('1');">新增</button>
     </div>
-    <table id="tab"></table>
+    <table id="tab" class="table-dark" style="table-layout: fixed;"></table>
 </div>
 
 <div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
@@ -35,6 +35,10 @@
                         <select id="menu_id" name="menuId" class="form-control">
                             <option th:each="menu:${menuList}" th:value="${menu.id}" th:text="${menu.full_name}"></option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="play_status">剧本状态</label>
+                        <input name="playStatus" id="play_status" type="text" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="picture">图片</label>
@@ -148,17 +152,27 @@
         });
     }
 
-    function opFormatter(v, row, index) {
-        return '<button class="btn btn-primary btn-sm" type="button" onclick="showInfo(\'2\',\'' + index + '\');">修改</button>'
-            + '&emsp;' +
-            '<button class="btn btn-danger btn-sm" type="button" onclick="deleteDrama(\'' + row.id + '\');">删除</button>';
-    }
-
-    function isHotFormatter(v, row, index) {
-        if (v == '1') {
-            return '<span class="label label-danger">是</span>';
-        } else {
-            return '<span>否</span>';
+    var Formatter = {
+        op: function (v, row, index) {
+            return '<button class="btn btn-primary btn-sm" type="button" onclick="showInfo(\'2\',\'' + index + '\');">修改</button>'
+                + '&emsp;' +
+                '<button class="btn btn-danger btn-sm" type="button" onclick="deleteDrama(\'' + row.id + '\');">删除</button>';
+        },
+        isHot: function (v, row, index) {
+            if (v == '1') {
+                return '<span class="label label-danger">是</span>';
+            } else {
+                return '<span>否</span>';
+            }
+        },
+        picture: function (v, row, index) {
+            return '<a target="_blank" href="' + row.picture_url + '"><img src="' + row.picture_url + '" style="height: 25px;width: 25px;"/></a>';
+        },
+        articleUrl: function (v, row, index) {
+            var show = v;
+            if (v.length > 12)
+                show = v.substring(0, 12) + '...';
+            return '<a target="_blank" title="' + v + '" href="' + v + '">' + show + '</a>';
         }
     }
 
@@ -180,11 +194,16 @@
 
     var columns = [
         {field: 'title', title: '标题', width: 100, align: 'center'},
-        {field: 'is_hot', title: 'HOT标识', width: 100, align: 'center', formatter: isHotFormatter},
+        {field: 'sub_title', title: '小标题', width: 100, align: 'center'},
+        {field: 'play_status', title: '剧本状态', width: 80, align: 'center'},
+        {field: 'is_hot', title: 'HOT标识', width: 100, align: 'center', formatter: Formatter.isHot},
         {field: 'number', title: '人数', width: 80, align: 'center'},
         {field: 'type_name', title: '类型', width: 100, align: 'center'},
+        {field: 'duration', title: '建议时长', width: 100, align: 'center'},
         {field: 'price', title: '价格', width: 100, align: 'center'},
-        {field: 'op', title: '操作', width: 40, align: 'center', formatter: opFormatter}
+        {field: 'picture', title: '图片', width: 100, align: 'center', formatter: Formatter.picture},
+        {field: 'article_url', title: '文章链接', width: 100, align: 'center', formatter: Formatter.articleUrl},
+        {field: 'op', title: '操作', width: 150, align: 'center', formatter: Formatter.op}
     ];
 </script>
 </html>

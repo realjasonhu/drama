@@ -18,6 +18,7 @@
         <result column="menu_id" jdbcType="BIGINT" property="menuId"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="sub_title" jdbcType="VARCHAR" property="subTitle"/>
+        <result column="play_status" jdbcType="VARCHAR" property="playStatus"/>
     </resultMap>
     <insert id="insert" parameterType="com.drama.pojo.DramaInfo">
         insert into drama_info (id, create_time, set_ip,
@@ -25,13 +26,13 @@
           number, type_name, duration,
           price, description, article_url,
           picture_url, menu_id, title,
-          sub_title)
+          sub_title, play_status)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{setIp,jdbcType=VARCHAR},
           #{updateTime,jdbcType=TIMESTAMP}, #{updateIp,jdbcType=VARCHAR}, #{isHot,jdbcType=CHAR},
           #{number,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{duration,jdbcType=VARCHAR},
           #{price,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{articleUrl,jdbcType=VARCHAR},
           #{pictureUrl,jdbcType=VARCHAR}, #{menuId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR},
-          #{subTitle,jdbcType=VARCHAR})
+          #{subTitle,jdbcType=VARCHAR},#{playStatus,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.drama.pojo.DramaInfo">
         insert into drama_info
@@ -84,6 +85,9 @@
             <if test="subTitle != null">
                 sub_title,
             </if>
+            <if test="playStatus != null">
+                play_status,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -134,6 +138,9 @@
             <if test="subTitle != null">
                 #{subTitle,jdbcType=VARCHAR},
             </if>
+            <if test="playStatus != null">
+                #{playStatus,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
 
@@ -179,6 +186,9 @@
             <if test="subTitle != null">
                 sub_title = #{subTitle,jdbcType=VARCHAR},
             </if>
+            <if test="playStatus != null">
+                play_status = #{playStatus,jdbcType=VARCHAR},
+            </if>
         </trim>
         where id = #{id,jdbcType=BIGINT}
     </update>
@@ -206,7 +216,8 @@
             t.picture_url,
             t.menu_id,
             t.title,
-            t.sub_title
+            t.sub_title,
+            t.play_status
         FROM drama_info t
         left join sys_menu sm on t.menu_id = sm.id
         where 1 = 1
