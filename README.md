@@ -30,6 +30,7 @@
 |picture_url|VARCHAR(100)|是|图片链接|
 |description|VARCHAR(100)|是|描述|
 |menu_id|VARCHAR(100)|是|菜单ID|
+|play_status|VARCHAR(100)|是|剧本状态|
 
 ### WEB端API
 **略 ...**
