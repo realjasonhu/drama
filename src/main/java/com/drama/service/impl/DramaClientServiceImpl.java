@@ -22,7 +22,7 @@ public class DramaClientServiceImpl implements DramaClientService {
 
     @Override
     public List<Map<String, Object>> queryDramaClientListData(Map<String, Object> params) {
-        PageHelper.startPage(MapUtils.getInteger(params, "page", 1), MapUtils.getInteger(params, "rows", 20));
+//        PageHelper.startPage(MapUtils.getInteger(params, "page", 1), MapUtils.getInteger(params, "rows", 20));
         List<Map<String, Object>> list = Optional.ofNullable(dramaInfoMapper.queryDramaListData(params)).map(l -> {
             l.forEach(map -> map.put("picture_url", new StringBuilder(PropertiesUtil.getConfiguraionProperty("realm.name", null)).append(MapUtils.getString(map, "picture_url"))));
             return l;
