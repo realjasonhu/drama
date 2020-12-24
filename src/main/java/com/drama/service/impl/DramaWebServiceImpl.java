@@ -13,6 +13,7 @@ import com.google.common.collect.Maps;
 import com.google.common.io.ByteStreams;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,7 +99,11 @@ public class DramaWebServiceImpl implements DramaWebService {
         int rows = MapUtils.getInteger(params, "limit", 10), pageNumber = MapUtils.getInteger(params, "offset", 0) / rows + 1;
         Page page = PageHelper.startPage(pageNumber, rows, true);
         List<Map<String, Object>> list = Optional.ofNullable(dramaInfoMapper.queryDramaListData(params)).map(l -> {
-            l.forEach(map -> map.put("picture_url", new StringBuilder(PropertiesUtil.getConfiguraionProperty("realm.name", null)).append(MapUtils.getString(map, "picture_url"))));
+            l.forEach(map -> {
+                String pictureUrl = MapUtils.getString(map, "picture_url");
+                if (StringUtils.isNotEmpty(pictureUrl))
+                    map.put("picture_url", new StringBuilder(PropertiesUtil.getConfiguraionProperty("realm.name", null)).append(pictureUrl).toString());
+            });
             return l;
         }).orElse(Lists.newArrayList());
         Map<String, Object> result = Maps.newHashMap();
