@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://42.192.42.138:3306/drama?useUnicode=true&characterEncoding=utf8&useSSL=false
+    url:
     username: drama
     password: drama
     type: com.alibaba.druid.pool.DruidDataSource
